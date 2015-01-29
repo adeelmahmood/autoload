@@ -3,6 +3,7 @@ package com.att.devops.autoload;
 import org.apache.curator.framework.CuratorFramework;
 
 import com.att.devops.autoload.builders.LeadershipServiceBuilder;
+import com.att.devops.autoload.builders.LeadershipServiceBuilder.ServiceType;
 import com.att.devops.autoload.exceptions.BuilderException;
 import com.att.devops.autoload.model.GenericResponse;
 import com.att.devops.autoload.model.LeadershipRequest;
@@ -41,7 +42,11 @@ public class AutoLoader {
 			private final LeadershipService service;
 
 			public LeadershipRequestHandler(LeadershipRequest req) throws BuilderException {
-				service = new LeadershipServiceBuilder().withClient(client).withPath(req.getPath()).build();
+				service = new LeadershipServiceBuilder()
+								.withClient(client)
+								.withPath(req.getPath())
+								.ofType(req.isBlockUntilDone() ? ServiceType.LATCH : ServiceType.CALLBACK)
+								.build();
 			}
 
 			public LeadershipService getResponse() {
