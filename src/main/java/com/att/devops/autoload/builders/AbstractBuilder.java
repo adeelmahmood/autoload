@@ -9,7 +9,7 @@ public abstract class AbstractBuilder<O> implements IBuilder<O> {
 	private AtomicBoolean building = new AtomicBoolean();
 
 	private O object;
-
+	
 	public final O build() throws BuilderException {
 		if (building.compareAndSet(false, true)) {
 			object = doBuild();
