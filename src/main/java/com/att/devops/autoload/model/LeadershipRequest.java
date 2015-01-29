@@ -1,19 +1,17 @@
 package com.att.devops.autoload.model;
 
-import org.apache.curator.framework.CuratorFramework;
-
 public class LeadershipRequest extends GenericRequest {
-
-	private CuratorFramework client;
 
 	private String path;
 
-	public CuratorFramework getClient() {
-		return client;
+	private boolean blockUntilDone;
+
+	public boolean isBlockUntilDone() {
+		return blockUntilDone;
 	}
 
-	public LeadershipRequest setClient(CuratorFramework client) {
-		this.client = client;
+	public LeadershipRequest setBlockUntilDone(boolean blockUntilDone) {
+		this.blockUntilDone = blockUntilDone;
 		return this;
 	}
 

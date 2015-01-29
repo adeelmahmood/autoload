@@ -2,10 +2,9 @@ package com.att.devops.autoload;
 
 import org.apache.curator.framework.CuratorFramework;
 
-import com.att.devops.autoload.builders.ClientBuilder;
 import com.att.devops.autoload.builders.LeadershipServiceBuilder;
+import com.att.devops.autoload.builders.LeadershipServiceBuilder.ServiceType;
 import com.att.devops.autoload.exceptions.BuilderException;
-import com.att.devops.autoload.model.ClientRequest;
 import com.att.devops.autoload.model.GenericResponse;
 import com.att.devops.autoload.model.LeadershipRequest;
 import com.att.devops.autoload.services.LeadershipService;
@@ -18,29 +17,14 @@ import com.att.devops.autoload.services.LeadershipService;
  */
 public class AutoLoader {
 
-	public Clients clients() {
-		return new Clients();
+	private CuratorFramework client;
+
+	public CuratorFramework getClient() {
+		return client;
 	}
 
-	public class Clients {
-
-		public CuratorFramework curatorClient(ClientRequest request) throws BuilderException {
-			ClientRequestHandler handler = new ClientRequestHandler(request);
-			return handler.getResponse();
-		}
-
-		public class ClientRequestHandler extends GenericResponse<CuratorFramework> {
-			private final CuratorFramework client;
-
-			public ClientRequestHandler(ClientRequest request) throws BuilderException {
-				client = new ClientBuilder().withHost(request.getHost()).withNamespace(request.getNs()).build();
-			}
-
-			@Override
-			protected CuratorFramework getResponse() {
-				return client;
-			}
-		}
+	public void setClient(CuratorFramework client) {
+		this.client = client;
 	}
 
 	public Services services() {
@@ -58,7 +42,11 @@ public class AutoLoader {
 			private final LeadershipService service;
 
 			public LeadershipRequestHandler(LeadershipRequest req) throws BuilderException {
-				service = new LeadershipServiceBuilder().withClient(req.getClient()).withPath(req.getPath()).build();
+				service = new LeadershipServiceBuilder()
+								.withClient(client)
+								.withPath(req.getPath())
+								.ofType(req.isBlockUntilDone() ? ServiceType.LATCH : ServiceType.CALLBACK)
+								.build();
 			}
 
 			public LeadershipService getResponse() {
