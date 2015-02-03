@@ -12,11 +12,9 @@ public abstract class AbstractLeadershipCallback implements LeadershipCallback {
 
 	@Override
 	public void obtained() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void ended() {
-		throw new UnsupportedOperationException();
 	}
 }

@@ -17,10 +17,6 @@
 		<level value="debug" />
 	</logger>
 
-	<logger name="org.springframework">
-		<level value="warn" />
-	</logger>
-
 	<logger name="org.apache.curator">
 		<level value="warn" />
 	</logger>

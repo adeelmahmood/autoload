@@ -44,6 +44,7 @@ public class LeadershipServiceBuilder extends ClientBuilderAdapter<CuratorFramew
 	@Override
 	protected LeadershipService doBuild() throws BuilderException {
 		try {
+			Preconditions.checkArgument(client != null, "service client must be provided");
 			Preconditions.checkArgument(path != null && !path.isEmpty(), "path must be specified");
 			
 			// create leadership service
