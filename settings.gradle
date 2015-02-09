@@ -1,0 +1,4 @@
+rootProject.name = "autoload"
+
+include "core"
+project(":core").name = "autoload-core"
